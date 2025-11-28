@@ -856,16 +856,17 @@
                 };
                 
                 // ارسال ایمیل از طریق Netlify Function
-                const response = await fetch('/api/send-email', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                        code: verificationCode
-                    })
-                });
+                // ارسال ایمیل از طریق Netlify Function
+const response = await fetch('/.netlify/functions/send-email', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        email: email,
+        code: verificationCode
+    })
+});
                 
                 const result = await response.json();
                 
@@ -1220,4 +1221,4 @@
         showTab('register');
     </script>
 </body>
-    </html>
+</html>
