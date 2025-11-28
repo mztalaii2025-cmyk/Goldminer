@@ -856,7 +856,7 @@
                 };
                 
                 // ارسال ایمیل از طریق Netlify Function
-                const response = await fetch('/.netlify/functions/send-email', {
+                const response = await fetch('/api/send-email', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1220,4 +1220,4 @@
         showTab('register');
     </script>
 </body>
-</html>
+    </html>
