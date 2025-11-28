@@ -141,6 +141,7 @@
         .form-group {
             margin-bottom: 20px;
             text-align: right;
+            position: relative;
         }
         
         .form-label {
@@ -152,13 +153,30 @@
         
         .form-input {
             width: 100%;
-            padding: 14px 16px;
+            padding: 14px 45px 14px 16px;
             background: rgba(255, 255, 255, 0.08);
             border: 2px solid rgba(255, 215, 0, 0.3);
             border-radius: 12px;
             color: var(--light);
             font-size: 1rem;
             transition: all 0.3s;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            left: 15px;
+            top: 42px;
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            padding: 5px;
+        }
+        
+        .password-toggle:hover {
+            color: var(--gold);
         }
         
         .form-input:focus {
@@ -227,43 +245,44 @@
         #gamePage {
             display: none;
             min-height: 100vh;
-            padding-bottom: 80px;
+            padding-bottom: 70px;
         }
         
-        /* هدر درست شده */
+        /* هدر کوچک‌تر شده */
         .header {
             background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(15px);
             border-bottom: 1px solid var(--gold);
-            padding: 15px 5%;
+            padding: 10px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
+            height: 60px;
         }
         
         .user-stats {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
         
         .stat {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             background: rgba(255, 215, 0, 0.1);
-            padding: 10px 15px;
-            border-radius: 12px;
+            padding: 8px 12px;
+            border-radius: 10px;
             border: 1px solid var(--glass-border);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         
         .stat i {
             color: var(--gold);
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
         
         .rock-value {
@@ -275,15 +294,15 @@
             background: rgba(255, 215, 0, 0.1);
             border: 1px solid var(--glass-border);
             color: var(--gold);
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
         
         .user-profile-btn:hover {
@@ -293,23 +312,23 @@
         
         /* محتوای اصلی */
         .main-content {
-            padding: 20px;
+            padding: 15px;
             max-width: 1200px;
             margin: 0 auto;
         }
         
-        /* بخش کوه مرکزی */
+        /* بخش کوه مرکزی - فقط در صفحه اصلی */
         .mountain-section {
             background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(18, 18, 18, 0.9) 100%);
-            border-radius: 25px;
-            padding: 25px;
-            margin-bottom: 20px;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
             border: 2px solid var(--glass-border);
-            box-shadow: 0 15px 50px rgba(255, 215, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.15);
             text-align: center;
             position: relative;
             overflow: hidden;
-            height: 400px;
+            height: 320px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -317,21 +336,21 @@
         }
         
         .mountain-title {
-            font-size: 2.2rem;
-            margin-bottom: 25px;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
             color: var(--gold);
             font-weight: 800;
             text-shadow: 
                 0 0 20px rgba(255, 215, 0, 0.8),
                 0 0 40px rgba(255, 215, 0, 0.4);
             z-index: 2;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             text-transform: uppercase;
         }
         
         .mountain-container {
             position: relative;
-            height: 260px;
+            height: 200px;
             display: flex;
             justify-content: center;
             align-items: flex-end;
@@ -341,9 +360,9 @@
         /* خورشید پشت کوه */
         .sun {
             position: absolute;
-            top: -40px;
-            width: 200px;
-            height: 200px;
+            top: -30px;
+            width: 160px;
+            height: 160px;
             background: radial-gradient(
                 circle at center,
                 #FFD700 0%,
@@ -352,16 +371,16 @@
                 transparent 70%
             );
             border-radius: 50%;
-            filter: blur(5px);
+            filter: blur(4px);
             animation: sunGlow 4s ease-in-out infinite;
             z-index: 1;
         }
         
         .sun-rays {
             position: absolute;
-            top: -60px;
-            width: 240px;
-            height: 240px;
+            top: -50px;
+            width: 200px;
+            height: 200px;
             background: radial-gradient(
                 circle at center,
                 rgba(255, 215, 0, 0.4) 0%,
@@ -386,9 +405,9 @@
         
         .mountain {
             position: relative;
-            width: 450px;
-            height: 220px;
-            filter: drop-shadow(0 20px 35px rgba(0, 0, 0, 0.8));
+            width: 380px;
+            height: 180px;
+            filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.7));
             z-index: 2;
         }
         
@@ -403,7 +422,7 @@
                 0% 100%, 15% 70%, 28% 85%, 35% 65%, 45% 80%, 
                 55% 50%, 65% 70%, 75% 35%, 85% 55%, 95% 75%, 100% 100%
             );
-            border-radius: 15px 15px 0 0;
+            border-radius: 12px 12px 0 0;
             transform-style: preserve-3d;
             transform: perspective(1000px) rotateX(10deg);
             border: 1px solid rgba(255,215,0,0.2);
@@ -421,7 +440,7 @@
                 0% 100%, 15% 70%, 28% 85%, 35% 65%, 45% 80%, 
                 55% 50%, 65% 70%, 75% 35%, 85% 55%, 95% 75%, 100% 100%
             );
-            border-radius: 15px 15px 0 0;
+            border-radius: 12px 12px 0 0;
         }
         
         .mountain-gold {
@@ -435,15 +454,15 @@
                 0% 100%, 15% 70%, 28% 85%, 35% 65%, 45% 80%, 
                 55% 50%, 65% 70%, 75% 35%, 85% 55%, 95% 75%, 100% 100%
             );
-            border-radius: 15px 15px 0 0;
+            border-radius: 12px 12px 0 0;
             transform: perspective(1000px) rotateX(10deg) scaleY(0);
             transform-origin: bottom;
             transition: transform 1.5s ease;
             opacity: 0.9;
             filter: brightness(1.3) contrast(1.2);
             box-shadow: 
-                inset 0 0 80px rgba(255,215,0,0.5),
-                0 0 60px rgba(255,215,0,0.3);
+                inset 0 0 60px rgba(255,215,0,0.5),
+                0 0 40px rgba(255,215,0,0.3);
             border: 2px solid rgba(255,215,0,0.4);
         }
         
@@ -469,25 +488,26 @@
         
         @keyframes floatParticle {
             0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); opacity: 0.6; }
-            25% { transform: translateY(-20px) rotate(90deg) scale(1.2); opacity: 0.9; }
-            50% { transform: translateY(-40px) rotate(180deg) scale(1.4); opacity: 1; }
-            75% { transform: translateY(-20px) rotate(270deg) scale(1.2); opacity: 0.9; }
+            25% { transform: translateY(-15px) rotate(90deg) scale(1.2); opacity: 0.9; }
+            50% { transform: translateY(-30px) rotate(180deg) scale(1.4); opacity: 1; }
+            75% { transform: translateY(-15px) rotate(270deg) scale(1.2); opacity: 0.9; }
         }
         
-        /* بخش چکش‌ها */
+        /* بخش چکش‌ها - ارتفاع کوچک‌تر */
         .hammers-section {
             background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(18, 18, 18, 0.9) 100%);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 20px;
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 15px;
             border: 2px solid var(--glass-border);
-            box-shadow: 0 10px 40px rgba(255, 215, 0, 0.15);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.12);
+            min-height: auto;
         }
         
         .section-title {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: var(--gold);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-align: center;
             font-weight: 800;
         }
@@ -495,17 +515,18 @@
         .hammers-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            gap: 15px;
         }
         
         .hammer-card {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 15px;
             border: 1px solid var(--glass-border);
             transition: all 0.3s;
             position: relative;
             overflow: hidden;
+            min-height: auto;
         }
         
         .hammer-card::before {
@@ -520,35 +541,35 @@
         
         .hammer-card.active {
             border-color: var(--success);
-            box-shadow: 0 5px 20px rgba(0, 200, 81, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 200, 81, 0.25);
         }
         
         .hammer-card.cooldown {
             border-color: var(--warning);
-            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.25);
         }
         
         .hammer-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         
         .hammer-icon {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: var(--gold);
         }
         
         .hammer-name {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
         }
         
         .hammer-status {
-            padding: 6px 12px;
-            border-radius: 12px;
-            font-size: 0.75rem;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.7rem;
             font-weight: 700;
         }
         
@@ -570,8 +591,8 @@
         .hammer-stats {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 15px;
-            font-size: 0.85rem;
+            margin-bottom: 12px;
+            font-size: 0.8rem;
             color: var(--gray);
             font-weight: 700;
         }
@@ -583,30 +604,30 @@
         
         .hammer-timer {
             text-align: center;
-            padding: 10px;
+            padding: 8px;
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            margin-bottom: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             border: 1px solid var(--glass-border);
         }
         
         .hammer-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
         
         .btn {
-            padding: 10px 15px;
+            padding: 8px 12px;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
             flex: 1;
             text-align: center;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
         
         .btn-gold {
@@ -616,7 +637,7 @@
         
         .btn-gold:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.35);
         }
         
         .btn:disabled {
@@ -626,7 +647,7 @@
             box-shadow: none !important;
         }
         
-        /* تأیید چند مرحله‌ای - درست شده */
+        /* تأیید چند مرحله‌ای */
         .confirmation-grid {
             position: fixed;
             top: 0;
@@ -644,73 +665,73 @@
         .verification-container {
             background: linear-gradient(145deg, #0a0a0a, #1a1a1a);
             border: 2px solid var(--gold);
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 18px;
+            padding: 25px;
             text-align: center;
             box-shadow: 
-                0 0 50px rgba(255, 215, 0, 0.3),
-                inset 0 0 30px rgba(255, 215, 0, 0.1);
-            max-width: 400px;
+                0 0 40px rgba(255, 215, 0, 0.25),
+                inset 0 0 25px rgba(255, 215, 0, 0.08);
+            max-width: 380px;
             width: 90%;
             position: relative;
             overflow: hidden;
         }
         
         .verification-header {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         
         .verification-icon {
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: var(--gold);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             animation: pulse 2s infinite;
         }
         
         .verification-title {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: var(--gold);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-weight: 700;
         }
         
         .verification-subtitle {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: var(--gray);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-weight: 700;
         }
         
         .hash-display {
             background: rgba(0, 0, 0, 0.6);
             border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 15px;
-            margin: 20px 0;
+            border-radius: 10px;
+            padding: 12px;
+            margin: 15px 0;
             font-family: 'Courier New', monospace;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--gold-light);
             text-align: center;
             direction: ltr;
             word-break: break-all;
-            box-shadow: inset 0 0 15px rgba(255,215,0,0.1);
+            box-shadow: inset 0 0 12px rgba(255,215,0,0.08);
             font-weight: 700;
         }
         
         .verification-steps {
             display: flex;
             justify-content: space-between;
-            margin: 25px 0;
+            margin: 20px 0;
             position: relative;
         }
         
         .verification-steps::before {
             content: '';
             position: absolute;
-            top: 20px;
+            top: 18px;
             left: 10%;
             right: 10%;
-            height: 3px;
+            height: 2px;
             background: rgba(255, 215, 0, 0.3);
             z-index: 1;
         }
@@ -724,15 +745,15 @@
         }
         
         .step-circle {
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             background: rgba(255, 215, 0, 0.2);
             border: 2px solid rgba(255, 215, 0, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             transition: all 0.3s ease;
             position: relative;
         }
@@ -740,7 +761,7 @@
         .step-circle.active {
             background: var(--gold);
             border-color: var(--gold);
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.5);
         }
         
         .step-circle.completed {
@@ -750,11 +771,11 @@
         
         .step-circle i {
             color: var(--light);
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
         
         .step-label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--gray);
             text-align: center;
             font-weight: 700;
@@ -766,19 +787,19 @@
         }
         
         .verification-timer {
-            font-size: 2.2rem;
+            font-size: 2rem;
             color: var(--gold);
             font-weight: 700;
-            margin: 20px 0;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            margin: 15px 0;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
         }
         
         .verification-reward {
-            font-size: 2rem;
+            font-size: 1.7rem;
             color: var(--gold);
             font-weight: 800;
-            margin: 20px 0;
-            text-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+            margin: 15px 0;
+            text-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
             background: linear-gradient(45deg, var(--gold), var(--gold-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -788,19 +809,19 @@
             background: linear-gradient(135deg, var(--gold), var(--gold-dark));
             color: var(--black);
             border: none;
-            padding: 15px 35px;
-            border-radius: 12px;
-            font-size: 1.1rem;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
-            margin-top: 20px;
-            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.25);
         }
         
         .verification-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.35);
         }
         
         .verification-btn:disabled {
@@ -809,87 +830,90 @@
             transform: none;
         }
         
-        /* صفحه پروفایل */
+        /* صفحه پروفایل - جمع و جور شده */
         .profile-section {
             background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(18, 18, 18, 0.9) 100%);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 20px;
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 15px;
             border: 2px solid var(--glass-border);
-            box-shadow: 0 10px 40px rgba(255, 215, 0, 0.15);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.12);
             display: none;
+            min-height: auto;
         }
         
         .profile-header {
             display: flex;
             align-items: center;
-            gap: 20px;
-            margin-bottom: 25px;
+            gap: 15px;
+            margin-bottom: 20px;
         }
         
         .profile-avatar {
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             background: linear-gradient(135deg, var(--gold), var(--gold-dark));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 1.5rem;
             color: var(--black);
+            flex-shrink: 0;
         }
         
         .profile-info h3 {
             color: var(--gold);
-            margin-bottom: 5px;
-            font-size: 1.3rem;
+            margin-bottom: 4px;
+            font-size: 1.1rem;
         }
         
         .profile-info p {
             color: var(--gray);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
         
         .profile-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
         }
         
         .profile-stat {
             background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 12px;
+            padding: 12px;
+            border-radius: 10px;
             border: 1px solid var(--glass-border);
             text-align: center;
         }
         
         .profile-stat-value {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: var(--gold);
             font-weight: 800;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
         
         .profile-stat-label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--gray);
         }
         
         .profile-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
         
         .profile-btn {
             flex: 1;
-            padding: 12px;
+            padding: 10px;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: 0.85rem;
         }
         
         .btn-logout {
@@ -911,23 +935,24 @@
             background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(15px);
             border-top: 1px solid var(--gold);
-            padding: 15px 5%;
+            padding: 10px 5%;
             display: flex;
             justify-content: space-around;
             align-items: center;
             z-index: 100;
+            height: 60px;
         }
         
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             cursor: pointer;
             transition: all 0.3s;
-            padding: 10px 15px;
-            border-radius: 15px;
-            min-width: 80px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            min-width: 70px;
         }
         
         .nav-item.active {
@@ -935,7 +960,7 @@
         }
         
         .nav-item i {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: var(--gray);
             transition: all 0.3s;
         }
@@ -945,7 +970,7 @@
         }
         
         .nav-item span {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--gray);
             transition: all 0.3s;
             font-weight: 700;
@@ -963,13 +988,13 @@
         /* لودینگ */
         .loading {
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 215, 0, 0.3);
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
             border-radius: 50%;
             border-top-color: var(--gold);
             animation: spin 1s ease-in-out infinite;
-            margin-right: 10px;
+            margin-right: 8px;
         }
         
         @keyframes spin {
@@ -979,78 +1004,12 @@
         /* ریسپانسیو */
         @media (max-width: 768px) {
             .mountain {
-                width: 380px;
-                height: 190px;
+                width: 320px;
+                height: 150px;
             }
             
             .mountain-container {
-                height: 220px;
-            }
-            
-            .mountain-title {
-                font-size: 1.8rem;
-            }
-            
-            .mountain-section {
-                height: 350px;
-                padding: 20px;
-            }
-            
-            .sun {
-                top: -30px;
-                width: 160px;
-                height: 160px;
-            }
-            
-            .sun-rays {
-                top: -50px;
-                width: 200px;
-                height: 200px;
-            }
-            
-            .hammers-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .auth-container {
-                padding: 30px 20px;
-            }
-            
-            .header {
-                padding: 12px 4%;
-            }
-            
-            .user-stats {
-                gap: 10px;
-            }
-            
-            .stat {
-                padding: 8px 12px;
-                font-size: 0.8rem;
-            }
-            
-            .nav-item {
-                min-width: 70px;
-                padding: 8px 12px;
-            }
-            
-            .nav-item i {
-                font-size: 1.2rem;
-            }
-            
-            .nav-item span {
-                font-size: 0.75rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .mountain {
-                width: 300px;
-                height: 160px;
-            }
-            
-            .mountain-container {
-                height: 190px;
+                height: 180px;
             }
             
             .mountain-title {
@@ -1058,45 +1017,46 @@
             }
             
             .mountain-section {
-                height: 320px;
+                height: 280px;
                 padding: 15px;
             }
             
             .sun {
-                top: -20px;
-                width: 140px;
-                height: 140px;
+                top: -25px;
+                width: 130px;
+                height: 130px;
             }
             
             .sun-rays {
                 top: -40px;
-                width: 180px;
-                height: 180px;
+                width: 170px;
+                height: 170px;
             }
             
-            .main-content {
-                padding: 15px;
+            .hammers-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .auth-container {
+                padding: 25px 20px;
             }
             
             .header {
-                padding: 10px 3%;
+                padding: 8px 4%;
+                height: 55px;
             }
             
             .user-stats {
-                flex-wrap: wrap;
                 gap: 8px;
             }
             
-            .auth-title {
-                font-size: 1.7rem;
-            }
-            
-            .auth-icon {
-                font-size: 2.5rem;
+            .stat {
+                padding: 6px 10px;
+                font-size: 0.8rem;
             }
             
             .nav-item {
-                min-width: 60px;
+                min-width: 65px;
                 padding: 6px 10px;
             }
             
@@ -1106,6 +1066,73 @@
             
             .nav-item span {
                 font-size: 0.7rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .mountain {
+                width: 280px;
+                height: 130px;
+            }
+            
+            .mountain-container {
+                height: 160px;
+            }
+            
+            .mountain-title {
+                font-size: 1.3rem;
+            }
+            
+            .mountain-section {
+                height: 250px;
+                padding: 12px;
+            }
+            
+            .sun {
+                top: -20px;
+                width: 110px;
+                height: 110px;
+            }
+            
+            .sun-rays {
+                top: -35px;
+                width: 150px;
+                height: 150px;
+            }
+            
+            .main-content {
+                padding: 12px;
+            }
+            
+            .header {
+                padding: 8px 3%;
+                height: 50px;
+            }
+            
+            .user-stats {
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+            
+            .auth-title {
+                font-size: 1.5rem;
+            }
+            
+            .auth-icon {
+                font-size: 2.2rem;
+            }
+            
+            .nav-item {
+                min-width: 60px;
+                padding: 5px 8px;
+            }
+            
+            .nav-item i {
+                font-size: 1rem;
+            }
+            
+            .nav-item span {
+                font-size: 0.65rem;
             }
         }
     </style>
@@ -1137,6 +1164,9 @@
                 <div class="form-group">
                     <label class="form-label">رمز عبور</label>
                     <input type="password" class="form-input" id="registerPassword" placeholder="حداقل ۶ کاراکتر" required minlength="6">
+                    <button type="button" class="password-toggle" onclick="togglePassword('registerPassword', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
                 </div>
                 <button type="submit" class="auth-btn" id="registerBtn">
                     ثبت نام و دریافت کد
@@ -1151,6 +1181,9 @@
                 <div class="form-group">
                     <label class="form-label">رمز عبور</label>
                     <input type="password" class="form-input" id="loginPassword" placeholder="رمز عبور خود را وارد کنید" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword('loginPassword', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
                 </div>
                 <button type="submit" class="auth-btn" id="loginBtn">
                     ورود به بازی
@@ -1161,7 +1194,7 @@
 
     <!-- صفحه اصلی بازی -->
     <div id="gamePage">
-        <!-- هدر درست شده -->
+        <!-- هدر کوچک‌تر شده -->
         <header class="header">
             <div class="user-stats">
                 <div class="stat">
@@ -1180,8 +1213,8 @@
         
         <!-- محتوای اصلی -->
         <div class="main-content">
-            <!-- بخش کوه مرکزی -->
-            <section class="mountain-section">
+            <!-- بخش کوه مرکزی - فقط در صفحه اصلی نمایش داده می‌شود -->
+            <section class="mountain-section" id="mountainSection">
                 <h2 class="mountain-title">GOLD COIN</h2>
                 
                 <div class="mountain-container">
@@ -1243,7 +1276,7 @@
             </section>
         </div>
         
-        <!-- تأیید چند مرحله‌ای جمع و جور -->
+        <!-- تأیید چند مرحله‌ای -->
         <div class="confirmation-grid" id="confirmationGrid">
             <div class="verification-container">
                 <div class="verification-header">
@@ -1288,7 +1321,7 @@
             </div>
         </div>
         
-        <!-- نویگیشن پایین -->
+        <!-- نویگیشن پایین - درست شده -->
         <nav class="bottom-nav">
             <div class="nav-item active" onclick="showSection('hammers')">
                 <i class="fas fa-hammer"></i>
@@ -1315,6 +1348,20 @@
         let users = JSON.parse(localStorage.getItem('minerUsers')) || {};
         let currentUser = null;
 
+        // تابع نمایش/مخفی کردن رمز عبور
+        function togglePassword(inputId, button) {
+            const input = document.getElementById(inputId);
+            const icon = button.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
+
         // ثبت نام
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -1340,29 +1387,15 @@
                     timestamp: Date.now()
                 };
                 
-                const response = await fetch('/.netlify/functions/send-email', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                        code: verificationCode
-                    })
-                });
+                // شبیه‌سازی ارسال ایمیل
+                localStorage.setItem('pendingVerification', JSON.stringify(pendingVerification));
                 
-                const result = await response.json();
-                
-                if (result.success) {
-                    showMessage('کد تأیید ۶ رقمی به ایمیل شما ارسال شد', 'success');
-                    showVerificationForm();
-                } else {
-                    throw new Error(result.error || 'خطا در ارسال ایمیل');
-                }
+                showMessage(`کد تأیید: ${verificationCode} - این کد در حالت واقعی به ایمیل ارسال می‌شد`, 'success');
+                showVerificationForm();
                 
             } catch (error) {
-                console.error("Email error:", error);
-                showMessage('خطا در ارسال ایمیل. لطفاً بعداً تلاش کنید.', 'error');
+                console.error("Error:", error);
+                showMessage('خطا در سیستم. لطفاً بعداً تلاش کنید.', 'error');
             }
             
             setLoading(button, false);
@@ -1483,6 +1516,9 @@
             document.getElementById('authPage').style.display = 'none';
             document.getElementById('gamePage').style.display = 'block';
             
+            // نمایش بخش چکش‌ها به صورت پیش‌فرض
+            showSection('hammers');
+            
             // آپدیت پروفایل
             updateProfile();
             
@@ -1493,6 +1529,7 @@
         // نمایش پروفایل
         function showProfile() {
             document.getElementById('hammersSection').style.display = 'none';
+            document.getElementById('mountainSection').style.display = 'none'; // مخفی کردن کوه
             document.getElementById('profileSection').style.display = 'block';
             updateProfile();
             
@@ -1511,6 +1548,7 @@
                 showProfile();
             } else if (section === 'hammers') {
                 document.getElementById('profileSection').style.display = 'none';
+                document.getElementById('mountainSection').style.display = 'block'; // نمایش کوه
                 document.getElementById('hammersSection').style.display = 'block';
                 
                 // آپدیت نویگیشن
@@ -1630,13 +1668,13 @@
         // ایجاد ذرات طلایی
         function createGoldParticles() {
             goldParticlesEl.innerHTML = '';
-            const particleCount = 50;
+            const particleCount = 40;
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'gold-particle';
                 
-                const size = Math.random() * 6 + 2;
+                const size = Math.random() * 5 + 2;
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
                 
@@ -1650,7 +1688,7 @@
             }
         }
 
-        // شروع تأیید چند مرحله‌ای - درست شده
+        // شروع تأیید چند مرحله‌ای
         function startVerification(reward) {
             gameState.pendingReward = reward;
             gameState.verificationTime = 8;
@@ -1727,7 +1765,7 @@
             });
         }
 
-        // تکمیل تأیید - درست شده
+        // تکمیل تأیید
         function completeVerification() {
             clearInterval(gameState.verificationInterval);
             clearInterval(gameState.hashInterval);
@@ -1886,4 +1924,4 @@
         showTab('register');
     </script>
 </body>
-    </html>
+                    </html>
