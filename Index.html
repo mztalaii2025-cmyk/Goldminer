@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معدن‌چی طلا</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --gold: #FFD700;
+            --gold-dark: #D4AF37;
+            --gold-light: #FFEC8B;
+            --black: #0A0A0A;
+            --dark: #1A1A1A;
+            --darker: #121212;
+            --light: #F5F5F5;
+            --gray: #8C8C8C;
+            --success: #00C851;
+            --warning: #FFD700;
+            --danger: #FF4444;
+            --glass: rgba(255, 215, 0, 0.1);
+            --glass-border: rgba(255, 215, 0, 0.3);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', sans-serif;
+            font-weight: 700;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--black) 0%, var(--darker) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Vazirmatn', sans-serif;
+            font-weight: 700;
+        }
+        
+        /* صفحه احراز هویت */
+        #authPage {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .auth-container {
+            background: linear-gradient(145deg, rgba(26, 26, 26, 0.95), rgba(18, 18, 18, 0.95));
+            border: 2px solid var(--gold);
+            border-radius: 25px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 
+                0 0 60px rgba(255, 215, 0, 0.3),
+                inset 0 0 40px rgba(255, 215, 0, 0.1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .auth-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+        }
+        
+        .auth-header {
+            margin-bottom: 30px;
+        }
+        
+        .auth-icon {
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .auth-title {
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+        
+        .auth-subtitle {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        /* تب‌های ثبت نام/ورود */
+        .auth-tabs {
+            display: flex;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 15px;
+            padding: 5px;
+            margin-bottom: 25px;
+        }
+        
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            color: var(--gray);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 700;
+        }
+        
+        .auth-tab.active {
+            background: var(--gold);
+            color: var(--black);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+        
+        /* فرم‌ها */
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--light);
+            font-size: 0.9rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 12px;
+            color: var(--light);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+        
+        .auth-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+        
+        .auth-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* وضعیت‌ها و پیام‌ها */
+        .auth-message {
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .message-success {
+            background: rgba(0, 200, 81, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+            display: block;
+        }
+        
+        .message-error {
+            background: rgba(255, 68, 68, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            display: block;
+        }
+        
+        .message-info {
+            background: rgba(255, 215, 0, 0.2);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+            display: block;
+        }
+        
+        /* صفحه اصلی بازی */
+        #gamePage {
+            display: none;
+            min-height: 100vh;
+            padding-bottom: 70px;
+        }
+        
+        /* هدر */
+        .header {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--gold);
+            padding: 12px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .user-stats {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 215, 0, 0.1);
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            font-size: 0.85rem;
+        }
+        
+        .stat i {
+            color: var(--gold);
+            font-size: 0.9rem;
+        }
+        
+        .rock-value {
+            font-weight: 700;
+            color: var(--gold);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-email {
+            color: var(--gray);
+            font-size: 0.8rem;
+            direction: ltr;
+        }
+        
+        .logout-btn {
+            background: rgba(255, 68, 68, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255, 68, 68, 0.3);
+        }
+        
+        /* محتوای اصلی */
+        .main-content {
+            padding: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* بخش کوه */
+        .mountain-section {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(18, 18, 18, 0.9) 100%);
+            border-radius: 25px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 2px solid var(--glass-border);
+            box-shadow: 0 15px 50px rgba(255, 215, 0, 0.2);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            height: 380px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        
+        .mountain-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--gold);
+            font-weight: 800;
+            text-shadow: 
+                0 0 20px rgba(255, 215, 0, 0.8),
+                0 0 40px rgba(255, 215, 0, 0.4);
+            z-index: 2;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        
+        .mountain-container {
+            position: relative;
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 2;
+        }
+        
+        .sun {
+            position: absolute;
+            top: -40px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(
+                circle at center,
+                #FFD700 0%,
+                #FFA500 30%,
+                #FF8C00 50%,
+                transparent 70%
+            );
+            border-radius: 50%;
+            filter: blur(5px);
+            animation: sunGlow 4s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        .sun-rays {
+            position: absolute;
+            top: -60px;
+            width: 240px;
+            height: 240px;
+            background: radial-gradient(
+                circle at center,
+                rgba(255, 215, 0, 0.4) 0%,
+                rgba(255, 165, 0, 0.3) 20%,
+                rgba(255, 140, 0, 0.2) 40%,
+                transparent 70%
+            );
+            border-radius: 50%;
+            animation: sunRays 6s ease-in-out infinite;
+            z-index: 0;
+        }
+        
+        @keyframes sunGlow {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+        
+        @keyframes sunRays {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        .mountain {
+            position: relative;
+            width: 450px;
+            height: 220px;
+            filter: drop-shadow(0 20px 35px rgba(0, 0, 0, 0.8));
+            z-index: 2;
+        }
+        
+        .mountain-base {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, #1a1a1a 0%, #2d2d2d 25%, #3a3a3a 50%, #2d2d2d 75%, #1a1a1a 100%);
+            clip-path: polygon(
+                0% 100%, 15% 70%, 28% 85%, 35% 65%, 45% 80%, 
+                55% 50%, 65% 70%, 75% 35%, 85% 55%, 95% 75%, 100% 100%
+            );
+            border-radius: 15px 15px 0 0;
+            transform-style: preserve-3d;
+            transform: perspective(1000px) rotateX(10deg);
+            border: 1px solid rgba(255,215,0,0.2);
+        }
+        
+        .mountain-details {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 30% 70%, rgba(255,215,0,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(255,215,0,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 50% 40%, rgba(255,215,0,0.05) 0%, transparent 50%);
+            clip-path: polygon(
+                0% 100%, 15% 70%, 28% 85%, 35% 65%, 45% 80%, 
+                55% 50%, 65% 70%, 75% 35%, 85% 55%, 95% 75%, 100% 100%
+            );
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .mountain-gold {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, var(--gold-dark) 0%, var(--gold) 30%, var(--gold-light) 70%, #fff8dc 100%);
+            clip-path: polygon(
+                0% 100%, 15% 70%, 28% 85%, 35% 65%, 45% 80%, 
+                55% 50%, 65% 70%, 75% 35%, 85% 55%, 95% 75%, 100% 100%
+            );
+            border-radius: 15px 15px 0 0;
+            transform: perspective(1000px) rotateX(10deg) scaleY(0);
+            transform-origin: bottom;
+            transition: transform 1.5s ease;
+            opacity: 0.9;
+            filter: brightness(1.3) contrast(1.2);
+            box-shadow: 
+                inset 0 0 80px rgba(255,215,0,0.5),
+                0 0 60px rgba(255,215,0,0.3);
+            border: 2px solid rgba(255,215,0,0.4);
+        }
+        
+        /* ذرات طلایی */
+        .gold-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+        }
+        
+        .gold-particle {
+            position: absolute;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: floatParticle 4s infinite ease-in-out;
+            filter: blur(0.5px) drop-shadow(0 0 5px rgba(255,215,0,0.8));
+        }
+        
+        @keyframes floatParticle {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); opacity: 0.6; }
+            25% { transform: translateY(-20px) rotate(90deg) scale(1.2); opacity: 0.9; }
+            50% { transform: translateY(-40px) rotate(180deg) scale(1.4); opacity: 1; }
+            75% { transform: translateY(-20px) rotate(270deg) scale(1.2); opacity: 0.9; }
+        }
+        
+        /* بخش چکش‌ها */
+        .hammers-section {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(18, 18, 18, 0.9) 100%);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 2px solid var(--glass-border);
+            box-shadow: 0 10px 40px rgba(255, 215, 0, 0.15);
+        }
+        
+        .hammers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+        
+        .hammer-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 15px;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hammer-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+        }
+        
+        .hammer-card.active {
+            border-color: var(--success);
+            box-shadow: 0 5px 20px rgba(0, 200, 81, 0.3);
+        }
+        
+        .hammer-card.cooldown {
+            border-color: var(--warning);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        .hammer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .hammer-icon {
+            font-size: 1.5rem;
+            color: var(--gold);
+        }
+        
+        .hammer-name {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        
+        .hammer-status {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        
+        .status-active {
+            background: rgba(0, 200, 81, 0.2);
+            color: var(--success);
+        }
+        
+        .status-cooldown {
+            background: rgba(255, 215, 0, 0.2);
+            color: var(--warning);
+        }
+        
+        .status-ready {
+            background: rgba(255, 215, 0, 0.2);
+            color: var(--gold);
+        }
+        
+        .hammer-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.8rem;
+            color: var(--gray);
+            font-weight: 700;
+        }
+        
+        .hammer-power {
+            color: var(--gold);
+            font-weight: 700;
+        }
+        
+        .hammer-timer {
+            text-align: center;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .hammer-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        
+        .btn-gold {
+            background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+        }
+        
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        
+        /* نویگیشن پایین */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(15px);
+            border-top: 1px solid var(--gold);
+            padding: 12px 5%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 8px 12px;
+            border-radius: 12px;
+            min-width: 70px;
+        }
+        
+        .nav-item.active {
+            background: rgba(255, 215, 0, 0.15);
+        }
+        
+        .nav-item i {
+            font-size: 1.2rem;
+            color: var(--gray);
+            transition: all 0.3s;
+        }
+        
+        .nav-item.active i {
+            color: var(--gold);
+        }
+        
+        .nav-item span {
+            font-size: 0.75rem;
+            color: var(--gray);
+            transition: all 0.3s;
+            font-weight: 700;
+        }
+        
+        .nav-item.active span {
+            color: var(--gold);
+            font-weight: 700;
+        }
+        
+        .nav-item:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+        
+        /* لودینگ */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 215, 0, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--gold);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- صفحه احراز هویت -->
+    <div id="authPage">
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="auth-icon">
+                    <i class="fas fa-mountain"></i>
+                </div>
+                <h1 class="auth-title">معدن‌چی طلا</h1>
+                <p class="auth-subtitle">برای شروع بازی ثبت نام کنید</p>
+            </div>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="showTab('register')">ثبت نام</button>
+                <button class="auth-tab" onclick="showTab('login')">ورود</button>
+            </div>
+            
+            <div class="auth-message" id="authMessage"></div>
+            
+            <form class="auth-form active" id="registerForm">
+                <div class="form-group">
+                    <label class="form-label">ایمیل</label>
+                    <input type="email" class="form-input" id="registerEmail" placeholder="example@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">رمز عبور</label>
+                    <input type="password" class="form-input" id="registerPassword" placeholder="حداقل ۶ کاراکتر" required minlength="6">
+                </div>
+                <button type="submit" class="auth-btn" id="registerBtn">
+                    ثبت نام و دریافت کد
+                </button>
+            </form>
+            
+            <form class="auth-form" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">ایمیل</label>
+                    <input type="email" class="form-input" id="loginEmail" placeholder="example@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">رمز عبور</label>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="رمز عبور خود را وارد کنید" required>
+                </div>
+                <button type="submit" class="auth-btn" id="loginBtn">
+                    ورود به بازی
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- صفحه بازی -->
+    <div id="gamePage">
+        <!-- هدر -->
+        <header class="header">
+            <div class="user-stats">
+                <div class="stat">
+                    <i class="fas fa-gem"></i>
+                    <span class="rock-value" id="rockBalance">0</span>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-clock"></i>
+                    <span id="activeTimers">0</span>
+                </div>
+            </div>
+            <div class="user-info">
+                <span class="user-email" id="userEmail"></span>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> خروج
+                </button>
+            </div>
+        </header>
+        
+        <!-- محتوای اصلی -->
+        <div class="main-content">
+            <!-- بخش کوه مرکزی -->
+            <section class="mountain-section">
+                <h2 class="mountain-title">GOLD COIN</h2>
+                
+                <div class="mountain-container">
+                    <!-- خورشید پشت کوه -->
+                    <div class="sun-rays"></div>
+                    <div class="sun"></div>
+                    
+                    <div class="mountain">
+                        <div class="mountain-base"></div>
+                        <div class="mountain-details"></div>
+                        <div class="mountain-gold" id="mountainGold"></div>
+                    </div>
+                </div>
+                
+                <!-- ذرات طلایی -->
+                <div class="gold-particles" id="goldParticles"></div>
+            </section>
+            
+            <!-- بخش چکش‌ها -->
+            <section class="hammers-section">
+                <div class="hammers-grid" id="hammersContainer">
+                    <!-- چکش توسط جاوااسکریپت اضافه خواهد شد -->
+                </div>
+            </section>
+        </div>
+        
+        <!-- نویگیشن پایین -->
+        <nav class="bottom-nav">
+            <div class="nav-item active">
+                <i class="fas fa-mountain"></i>
+                <span>کوه</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-hammer"></i>
+                <span>چکش</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-store"></i>
+                <span>فروشگاه</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-trophy"></i>
+                <span>لیدربرد</span>
+            </div>
+        </nav>
+    </div>
+
+    <script>
+        // سیستم کاربران
+        let pendingVerification = null;
+        let users = JSON.parse(localStorage.getItem('minerUsers')) || {};
+
+        // ثبت نام
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const button = document.getElementById('registerBtn');
+            
+            setLoading(button, true);
+            
+            // چک کردن اینکه ایمیل قبلاً ثبت شده
+            if (users[email]) {
+                showMessage('این ایمیل قبلاً ثبت شده است', 'error');
+                setLoading(button, false);
+                return;
+            }
+            
+            try {
+                // تولید کد ۶ رقمی
+                const verificationCode = Math.floor(100000 + Math.random() * 900000);
+                pendingVerification = {
+                    email: email,
+                    password: password,
+                    code: verificationCode,
+                    timestamp: Date.now()
+                };
+                
+                // ارسال ایمیل از طریق Netlify Function
+                const response = await fetch('/.netlify/functions/send-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        code: verificationCode
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('کد تأیید ۶ رقمی به ایمیل شما ارسال شد', 'success');
+                    showVerificationForm();
+                } else {
+                    throw new Error(result.error || 'خطا در ارسال ایمیل');
+                }
+                
+            } catch (error) {
+                console.error("Email error:", error);
+                showMessage('خطا در ارسال ایمیل. لطفاً بعداً تلاش کنید.', 'error');
+            }
+            
+            setLoading(button, false);
+        });
+
+        // نمایش فرم تأیید کد
+        function showVerificationForm() {
+            const form = document.querySelector('.auth-form.active');
+            form.innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">کد تأیید ۶ رقمی</label>
+                    <input type="text" class="form-input" id="verificationCode" 
+                           placeholder="کد ارسال شده به ایمیل را وارد کنید" 
+                           maxlength="6" pattern="[0-9]{6}" required>
+                </div>
+                <button type="button" class="auth-btn" onclick="verifyCode()">
+                    تأیید کد و شروع بازی
+                </button>
+                <button type="button" class="auth-btn" onclick="location.reload()" 
+                        style="background: var(--gray); margin-top: 10px;">
+                    بازگشت
+                </button>
+            `;
+        }
+
+        // تأیید کد
+        function verifyCode() {
+            const enteredCode = document.getElementById('verificationCode').value;
+            
+            if (!pendingVerification) {
+                showMessage('خطا در پردازش کد تأیید', 'error');
+                return;
+            }
+            
+            // چک کردن زمان انقضا (10 دقیقه)
+            const timeDiff = Date.now() - pendingVerification.timestamp;
+            if (timeDiff > 10 * 60 * 1000) {
+                showMessage('کد تأیید منقضی شده است', 'error');
+                location.reload();
+                return;
+            }
+            
+            if (enteredCode === pendingVerification.code.toString()) {
+                // ذخیره کاربر
+                users[pendingVerification.email] = {
+                    password: pendingVerification.password,
+                    verified: true,
+                    createdAt: new Date(),
+                    balance: 0
+                };
+                localStorage.setItem('minerUsers', JSON.stringify(users));
+                
+                showMessage('حساب شما با موفقیت ایجاد شد!', 'success');
+                setTimeout(() => {
+                    showGame(pendingVerification.email);
+                }, 2000);
+                
+            } else {
+                showMessage('کد تأیید نادرست است', 'error');
+            }
+        }
+
+        // ورود کاربر
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const button = document.getElementById('loginBtn');
+            
+            setLoading(button, true);
+            
+            const user = users[email];
+            if (user && user.password === password && user.verified) {
+                showGame(email);
+            } else {
+                showMessage('ایمیل یا رمز عبور اشتباه است', 'error');
+            }
+            
+            setLoading(button, false);
+        });
+
+        // توابع کمکی
+        function setLoading(button, isLoading) {
+            button.disabled = isLoading;
+            button.innerHTML = isLoading ? 
+                '<span class="loading"></span>در حال پردازش...' : 
+                'ثبت نام و دریافت کد';
+        }
+
+        function showMessage(message, type) {
+            const messageEl = document.getElementById('authMessage');
+            messageEl.textContent = message;
+            messageEl.className = 'auth-message';
+            messageEl.classList.add(`message-${type}`);
+        }
+
+        function showTab(tabName) {
+            document.querySelectorAll('.auth-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.auth-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            
+            if (tabName === 'register') {
+                document.querySelector('.auth-tab:nth-child(1)').classList.add('active');
+                document.getElementById('registerForm').classList.add('active');
+            } else {
+                document.querySelector('.auth-tab:nth-child(2)').classList.add('active');
+                document.getElementById('loginForm').classList.add('active');
+            }
+        }
+
+        // نمایش بازی
+        function showGame(email) {
+            document.getElementById('authPage').style.display = 'none';
+            document.getElementById('gamePage').style.display = 'block';
+            
+            // نمایش ایمیل کاربر
+            document.getElementById('userEmail').textContent = email;
+            
+            // شروع بازی
+            initGame();
+        }
+
+        // خروج
+        function logout() {
+            document.getElementById('gamePage').style.display = 'none';
+            document.getElementById('authPage').style.display = 'block';
+            showMessage('با موفقیت خارج شدید', 'success');
+            document.getElementById('registerForm').reset();
+            document.getElementById('loginForm').reset();
+        }
+
+        // ==================== کد بازی ====================
+        
+        // داده‌های اولیه بازی
+        let gameState = {
+            rockBalance: 0,
+            activeTimers: 0,
+            hammers: [
+                {
+                    id: 1,
+                    name: 'چکش طلایی',
+                    icon: 'fas fa-hammer',
+                    duration: 30,
+                    cooldown: 5,
+                    reward: 1000,
+                    isActive: false,
+                    isOnCooldown: false,
+                    timeLeft: 0,
+                    progress: 0
+                }
+            ]
+        };
+
+        // المان‌های DOM بازی
+        const rockBalanceEl = document.getElementById('rockBalance');
+        const activeTimersEl = document.getElementById('activeTimers');
+        const mountainGoldEl = document.getElementById('mountainGold');
+        const goldParticlesEl = document.getElementById('goldParticles');
+        const hammersContainerEl = document.getElementById('hammersContainer');
+
+        // تایمر اصلی بازی
+        let gameInterval;
+
+        // مقداردهی اولیه بازی
+        function initGame() {
+            updateUI();
+            renderHammers();
+            createGoldParticles();
+            
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // شروع تایمر بازی
+            gameInterval = setInterval(updateGame, 1000);
+        }
+
+        // ایجاد ذرات طلایی
+        function createGoldParticles() {
+            goldParticlesEl.innerHTML = '';
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'gold-particle';
+                
+                const size = Math.random() * 6 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                particle.style.left = `${Math.random() * 85 + 7.5}%`;
+                particle.style.top = `${Math.random() * 75 + 15}%`;
+                
+                particle.style.animationDelay = `${Math.random() * 3}s`;
+                particle.style.animationDuration = `${Math.random() * 2 + 3}s`;
+                
+                goldParticlesEl.appendChild(particle);
+            }
+        }
+
+        // بروزرسانی وضعیت بازی
+        function updateGame() {
+            let activeCount = 0;
+            
+            gameState.hammers.forEach(hammer => {
+                if (hammer.isActive && hammer.timeLeft > 0) {
+                    hammer.timeLeft--;
+                    activeCount++;
+                    
+                    hammer.progress = 1 - (hammer.timeLeft / hammer.duration);
+                    
+                    updateMountainVisual();
+                    
+                    if (hammer.timeLeft === 0) {
+                        // پاداش دادن
+                        gameState.rockBalance += hammer.reward;
+                        
+                        hammer.isActive = false;
+                        hammer.isOnCooldown = true;
+                        hammer.timeLeft = hammer.cooldown;
+                        hammer.progress = 0;
+                        
+                        setTimeout(() => {
+                            updateMountainVisual();
+                        }, 100);
+                    }
+                } else if (hammer.isOnCooldown && hammer.timeLeft > 0) {
+                    hammer.timeLeft--;
+                    if (hammer.timeLeft === 0) {
+                        hammer.isOnCooldown = false;
+                    }
+                }
+            });
+            
+            gameState.activeTimers = activeCount;
+            updateUI();
+            renderHammers();
+        }
+
+        // بروزرسانی UI
+        function updateUI() {
+            rockBalanceEl.textContent = gameState.rockBalance;
+            activeTimersEl.textContent = gameState.activeTimers;
+        }
+
+        // بروزرسانی نمایش کوه
+        function updateMountainVisual() {
+            const hammer = gameState.hammers[0];
+            if (hammer && hammer.isActive) {
+                mountainGoldEl.style.transform = `perspective(1000px) rotateX(10deg) scaleY(${hammer.progress})`;
+            } else {
+                mountainGoldEl.style.transform = 'perspective(1000px) rotateX(10deg) scaleY(0)';
+            }
+        }
+
+        // رندر چکش
+        function renderHammers() {
+            hammersContainerEl.innerHTML = '';
+            
+            gameState.hammers.forEach(hammer => {
+                const hammerCard = document.createElement('div');
+                hammerCard.className = 'hammer-card';
+                
+                if (hammer.isActive) {
+                    hammerCard.classList.add('active');
+                } else if (hammer.isOnCooldown) {
+                    hammerCard.classList.add('cooldown');
+                }
+                
+                let statusText = '';
+                let statusClass = '';
+                
+                if (hammer.isActive) {
+                    statusText = 'فعال';
+                    statusClass = 'status-active';
+                } else if (hammer.isOnCooldown) {
+                    statusText = 'در حال بازیابی';
+                    statusClass = 'status-cooldown';
+                } else {
+                    statusText = 'آماده';
+                    statusClass = 'status-ready';
+                }
+                
+                let timerText = '';
+                if (hammer.isActive) {
+                    timerText = `⏳ ${hammer.timeLeft} ثانیه - ${Math.round(hammer.progress * 100)}%`;
+                } else if (hammer.isOnCooldown) {
+                    timerText = `❄️ ${hammer.timeLeft} ثانیه`;
+                } else {
+                    timerText = '✅ آماده';
+                }
+                
+                hammerCard.innerHTML = `
+                    <div class="hammer-header">
+                        <div class="hammer-name">${hammer.name}</div>
+                        <div class="hammer-status ${statusClass}">${statusText}</div>
+                    </div>
+                    <div class="hammer-icon">
+                        <i class="${hammer.icon}"></i>
+                    </div>
+                    <div class="hammer-stats">
+                        <div>پاداش: <span class="hammer-power">${hammer.reward} GOLD</span></div>
+                        <div>مدت: ${hammer.duration}ثانیه</div>
+                    </div>
+                    <div class="hammer-timer">
+                        ${timerText}
+                    </div>
+                    <div class="hammer-actions">
+                        <button class="btn btn-gold" onclick="activateHammer(${hammer.id})" 
+                            ${hammer.isActive || hammer.isOnCooldown ? 'disabled' : ''}>
+                            شروع
+                        </button>
+                    </div>
+                `;
+                
+                hammersContainerEl.appendChild(hammerCard);
+            });
+        }
+
+        // فعال‌سازی چکش
+        function activateHammer(hammerId) {
+            const hammer = gameState.hammers.find(h => h.id === hammerId);
+            
+            if (!hammer.isActive && !hammer.isOnCooldown) {
+                hammer.isActive = true;
+                hammer.timeLeft = hammer.duration;
+                hammer.progress = 0;
+            }
+        }
+
+        // شروع اولیه
+        showTab('register');
+    </script>
+</body>
+</html>
