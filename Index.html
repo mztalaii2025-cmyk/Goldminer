@@ -42,10 +42,18 @@
         /* صفحه احراز هویت */
         #authPage {
             min-height: 100vh;
-            display: flex;
+            display: none;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
         }
         
         .auth-container {
@@ -243,7 +251,7 @@
         
         /* صفحه اصلی بازی */
         #gamePage {
-            display: none;
+            display: block; /* تغییر: ابتدا نمایش داده شود */
             min-height: 100vh;
             padding-bottom: 70px;
         }
@@ -865,7 +873,8 @@
         .profile-info h3 {
             color: var(--gold);
             margin-bottom: 4px;
-            font-size: 1.1rem;
+            font-size: 0.9rem; /* تغییر: فونت ایمیل کوچک‌تر */
+            word-break: break-all;
         }
         
         .profile-info p {
@@ -999,6 +1008,35 @@
         
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+        
+        /* پیام لاگین */
+        .login-message {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .login-btn {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.25);
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.35);
         }
         
         /* ریسپانسیو */
@@ -1206,7 +1244,7 @@
                     <span id="activeTimers">0</span>
                 </div>
             </div>
-            <div class="user-profile-btn" onclick="showProfile()">
+            <div class="user-profile-btn" onclick="showAuthPage()">
                 <i class="fas fa-user"></i>
             </div>
         </header>
@@ -1270,6 +1308,15 @@
             <!-- بخش چکش‌ها -->
             <section class="hammers-section" id="hammersSection">
                 <h3 class="section-title">چکش‌های استخراج</h3>
+                
+                <!-- پیام لاگین برای کاربران مهمان -->
+                <div class="login-message" id="guestMessage">
+                    <p>برای استفاده از چکش‌ها باید وارد حساب کاربری خود شوید</p>
+                    <button class="login-btn" onclick="showAuthPage()">
+                        <i class="fas fa-sign-in-alt"></i> ورود / ثبت نام
+                    </button>
+                </div>
+                
                 <div class="hammers-grid" id="hammersContainer">
                     <!-- چکش توسط جاوااسکریپت اضافه خواهد شد -->
                 </div>
@@ -1343,10 +1390,37 @@
     </div>
 
     <script>
-        // سیستم کاربران
+        // ==================== سیستم مدیریت کاربران با Cookie ====================
+        
         let pendingVerification = null;
-        let users = JSON.parse(localStorage.getItem('minerUsers')) || {};
         let currentUser = null;
+
+        // توابع مدیریت Cookie
+        function setCookie(name, value, days) {
+            const expires = new Date();
+            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = `${name}=${encodeURIComponent(value)};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i=0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+            }
+            return null;
+        }
+
+        function getUsers() {
+            const usersCookie = getCookie('minerUsers');
+            return usersCookie ? JSON.parse(usersCookie) : {};
+        }
+
+        function saveUsers(users) {
+            setCookie('minerUsers', JSON.stringify(users), 365);
+        }
 
         // تابع نمایش/مخفی کردن رمز عبور
         function togglePassword(inputId, button) {
@@ -1362,6 +1436,16 @@
             }
         }
 
+        // نمایش صفحه احراز هویت
+        function showAuthPage() {
+            document.getElementById('authPage').style.display = 'flex';
+        }
+
+        // بستن صفحه احراز هویت
+        function hideAuthPage() {
+            document.getElementById('authPage').style.display = 'none';
+        }
+
         // ثبت نام
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -1371,6 +1455,8 @@
             const button = document.getElementById('registerBtn');
             
             setLoading(button, true);
+            
+            const users = getUsers();
             
             if (users[email]) {
                 showMessage('این ایمیل قبلاً ثبت شده است', 'error');
@@ -1387,15 +1473,34 @@
                     timestamp: Date.now()
                 };
                 
-                // شبیه‌سازی ارسال ایمیل
-                localStorage.setItem('pendingVerification', JSON.stringify(pendingVerification));
+                // ذخیره در Cookie
+                setCookie('pendingVerification', JSON.stringify(pendingVerification), 1);
                 
-                showMessage(`کد تأیید: ${verificationCode} - این کد در حالت واقعی به ایمیل ارسال می‌شد`, 'success');
-                showVerificationForm();
+                const response = await fetch('/.netlify/functions/send-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        code: verificationCode
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('کد تأیید ۶ رقمی به ایمیل شما ارسال شد', 'success');
+                    showVerificationForm();
+                } else {
+                    throw new Error(result.error || 'خطا در ارسال ایمیل');
+                }
                 
             } catch (error) {
-                console.error("Error:", error);
-                showMessage('خطا در سیستم. لطفاً بعداً تلاش کنید.', 'error');
+                console.error("Email error:", error);
+                // شبیه‌سازی برای حالت تست
+                showMessage(`کد تأیید: ${verificationCode} - این کد در حالت واقعی به ایمیل ارسال می‌شد`, 'success');
+                showVerificationForm();
             }
             
             setLoading(button, false);
@@ -1424,11 +1529,14 @@
         // تأیید کد
         function verifyCode() {
             const enteredCode = document.getElementById('verificationCode').value;
+            const pendingCookie = getCookie('pendingVerification');
             
-            if (!pendingVerification) {
+            if (!pendingCookie) {
                 showMessage('خطا در پردازش کد تأیید', 'error');
                 return;
             }
+            
+            pendingVerification = JSON.parse(pendingCookie);
             
             const timeDiff = Date.now() - pendingVerification.timestamp;
             if (timeDiff > 10 * 60 * 1000) {
@@ -1438,6 +1546,7 @@
             }
             
             if (enteredCode === pendingVerification.code.toString()) {
+                const users = getUsers();
                 users[pendingVerification.email] = {
                     password: pendingVerification.password,
                     verified: true,
@@ -1446,10 +1555,14 @@
                     level: 1,
                     totalMined: 0
                 };
-                localStorage.setItem('minerUsers', JSON.stringify(users));
+                saveUsers(users);
+                
+                // ذخیره کاربر فعلی
+                setCookie('currentUser', pendingVerification.email, 7);
                 
                 showMessage('حساب شما با موفقیت ایجاد شد!', 'success');
                 setTimeout(() => {
+                    hideAuthPage();
                     showGame(pendingVerification.email);
                 }, 2000);
                 
@@ -1468,8 +1581,13 @@
             
             setLoading(button, true);
             
+            const users = getUsers();
             const user = users[email];
+            
             if (user && user.password === password && user.verified) {
+                // ذخیره کاربر فعلی
+                setCookie('currentUser', email, 7);
+                hideAuthPage();
                 showGame(email);
             } else {
                 showMessage('ایمیل یا رمز عبور اشتباه است', 'error');
@@ -1513,11 +1631,12 @@
         // نمایش بازی
         function showGame(email) {
             currentUser = email;
-            document.getElementById('authPage').style.display = 'none';
-            document.getElementById('gamePage').style.display = 'block';
             
-            // نمایش بخش چکش‌ها به صورت پیش‌فرض
-            showSection('hammers');
+            // تغییر آیکون کاربر در هدر
+            document.querySelector('.user-profile-btn').innerHTML = '<i class="fas fa-user-check"></i>';
+            
+            // مخفی کردن پیام مهمان
+            document.getElementById('guestMessage').style.display = 'none';
             
             // آپدیت پروفایل
             updateProfile();
@@ -1528,12 +1647,16 @@
 
         // نمایش پروفایل
         function showProfile() {
+            if (!currentUser) {
+                showAuthPage();
+                return;
+            }
+            
             document.getElementById('hammersSection').style.display = 'none';
-            document.getElementById('mountainSection').style.display = 'none'; // مخفی کردن کوه
+            document.getElementById('mountainSection').style.display = 'none';
             document.getElementById('profileSection').style.display = 'block';
             updateProfile();
             
-            // آپدیت نویگیشن
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
                 if (item.querySelector('i').classList.contains('fa-user')) {
@@ -1548,10 +1671,16 @@
                 showProfile();
             } else if (section === 'hammers') {
                 document.getElementById('profileSection').style.display = 'none';
-                document.getElementById('mountainSection').style.display = 'block'; // نمایش کوه
+                document.getElementById('mountainSection').style.display = 'block';
                 document.getElementById('hammersSection').style.display = 'block';
                 
-                // آپدیت نویگیشن
+                // نمایش پیام مهمان اگر کاربر لاگین نکرده
+                if (!currentUser) {
+                    document.getElementById('guestMessage').style.display = 'block';
+                } else {
+                    document.getElementById('guestMessage').style.display = 'none';
+                }
+                
                 document.querySelectorAll('.nav-item').forEach(item => {
                     item.classList.remove('active');
                     if (item.querySelector('i').classList.contains('fa-hammer')) {
@@ -1563,24 +1692,54 @@
 
         // آپدیت پروفایل
         function updateProfile() {
-            if (currentUser && users[currentUser]) {
+            if (currentUser) {
+                const users = getUsers();
                 const user = users[currentUser];
-                document.getElementById('profileEmail').textContent = currentUser;
-                document.getElementById('profileBalance').textContent = user.balance;
-                document.getElementById('profileLevel').textContent = user.level;
-                document.getElementById('profileMined').textContent = user.totalMined || 0;
+                if (user) {
+                    document.getElementById('profileEmail').textContent = currentUser;
+                    document.getElementById('profileBalance').textContent = user.balance;
+                    document.getElementById('profileLevel').textContent = user.level;
+                    document.getElementById('profileMined').textContent = user.totalMined || 0;
+                }
             }
         }
 
         // خروج
         function logout() {
+            // حذف کوکی کاربر
+            setCookie('currentUser', '', -1);
             currentUser = null;
-            document.getElementById('gamePage').style.display = 'none';
-            document.getElementById('authPage').style.display = 'block';
+            
+            // بازگشت به حالت مهمان
+            document.querySelector('.user-profile-btn').innerHTML = '<i class="fas fa-user"></i>';
+            document.getElementById('guestMessage').style.display = 'block';
+            document.getElementById('profileSection').style.display = 'none';
+            document.getElementById('mountainSection').style.display = 'block';
+            document.getElementById('hammersSection').style.display = 'block';
+            
             showMessage('با موفقیت خارج شدید', 'success');
-            document.getElementById('registerForm').reset();
-            document.getElementById('loginForm').reset();
+            
+            // آپدیت نویگیشن
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.querySelector('i').classList.contains('fa-hammer')) {
+                    item.classList.add('active');
+                }
+            });
         }
+
+        // بررسی کاربر لاگین کرده در هنگام لود صفحه
+        window.addEventListener('load', function() {
+            const savedUser = getCookie('currentUser');
+            const users = getUsers();
+            
+            if (savedUser && users[savedUser]) {
+                showGame(savedUser);
+            } else {
+                // نمایش پیام مهمان
+                document.getElementById('guestMessage').style.display = 'block';
+            }
+        });
 
         // ==================== کد بازی ====================
         
@@ -1653,8 +1812,12 @@
         // مقداردهی اولیه بازی
         function initGame() {
             // بارگذاری داده‌های کاربر
-            if (currentUser && users[currentUser]) {
-                gameState.rockBalance = users[currentUser].balance || 0;
+            if (currentUser) {
+                const users = getUsers();
+                const user = users[currentUser];
+                if (user) {
+                    gameState.rockBalance = user.balance || 0;
+                }
             }
             
             updateUI();
@@ -1690,6 +1853,11 @@
 
         // شروع تأیید چند مرحله‌ای
         function startVerification(reward) {
+            if (!currentUser) {
+                showAuthPage();
+                return;
+            }
+            
             gameState.pendingReward = reward;
             gameState.verificationTime = 8;
             gameState.currentStep = 0;
@@ -1773,11 +1941,15 @@
             gameState.rockBalance += gameState.pendingReward;
             
             // ذخیره در پروفایل کاربر
-            if (currentUser && users[currentUser]) {
-                users[currentUser].balance = gameState.rockBalance;
-                users[currentUser].totalMined = (users[currentUser].totalMined || 0) + gameState.pendingReward;
-                localStorage.setItem('minerUsers', JSON.stringify(users));
-                updateProfile();
+            if (currentUser) {
+                const users = getUsers();
+                const user = users[currentUser];
+                if (user) {
+                    user.balance = gameState.rockBalance;
+                    user.totalMined = (user.totalMined || 0) + gameState.pendingReward;
+                    saveUsers(users);
+                    updateProfile();
+                }
             }
             
             gameState.pendingReward = 0;
@@ -1899,8 +2071,8 @@
                     </div>
                     <div class="hammer-actions">
                         <button class="btn btn-gold" onclick="activateHammer(${hammer.id})" 
-                            ${hammer.isActive || hammer.isOnCooldown ? 'disabled' : ''}>
-                            شروع استخراج
+                            ${(hammer.isActive || hammer.isOnCooldown || !currentUser) ? 'disabled' : ''}>
+                            ${!currentUser ? 'ورود برای شروع' : 'شروع استخراج'}
                         </button>
                     </div>
                 `;
@@ -1911,6 +2083,11 @@
 
         // فعال‌سازی چکش
         function activateHammer(hammerId) {
+            if (!currentUser) {
+                showAuthPage();
+                return;
+            }
+            
             const hammer = gameState.hammers.find(h => h.id === hammerId);
             
             if (!hammer.isActive && !hammer.isOnCooldown) {
@@ -1924,4 +2101,4 @@
         showTab('register');
     </script>
 </body>
-                    </html>
+    </html>
