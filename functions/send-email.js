@@ -28,16 +28,12 @@ exports.handler = async function(event, context) {
     const { email, code } = JSON.parse(event.body);
     console.log('📧 Sending email to:', email);
 
-    // استفاده از Ethereal برای تست
-    const testAccount = await nodemailer.createTestAccount();
-    
-    const transporter = nodemailer.createTransporter({
-      host: 'smtp.ethereal.email',
-      port: 587,
-      secure: false,
+    // استفاده از Gmail واقعی
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
       auth: {
-        user: testAccount.user,      // ✅ درست
-        pass: testAccount.pass       // ✅ درست (خط ۴۰)
+        user: process.env.GMAIL_USER,  // از Environment Variables
+        pass: process.env.GMAIL_PASS   // از Environment Variables
       }
     });
 
@@ -54,31 +50,33 @@ exports.handler = async function(event, context) {
             ${code}
           </div>
           <p>این کد برای تأیید حساب شما در بازی معدن‌چی طلا است.</p>
+          <p style="color: #666; font-size: 12px; margin-top: 20px;">
+            اگر شما این درخواست را نکرده‌اید، لطفاً این ایمیل را نادیده بگیرید.
+          </p>
         </div>
       `
     };
 
     const result = await transporter.sendMail(mailOptions);
-    console.log('✅ Email sent! Preview URL:', nodemailer.getTestMessageUrl(result));
+    console.log('✅ Email sent successfully to:', email);
 
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({ 
         success: true, 
-        message: 'ایمیل ارسال شد',
-        previewUrl: nodemailer.getTestMessageUrl(result)
+        message: 'ایمیل ارسال شد'
       })
     };
 
   } catch (error) {
-    console.error('❌ Error:', error);
+    console.error('❌ Gmail Error:', error);
     return {
       statusCode: 500,
       headers,
       body: JSON.stringify({ 
         success: false, 
-        error: error.message 
+        error: 'خطا در ارسال ایمیل. لطفاً بعداً تلاش کنید.'
       })
     };
   }
