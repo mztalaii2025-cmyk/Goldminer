@@ -36,8 +36,8 @@ exports.handler = async function(event, context) {
       port: 587,
       secure: false,
       auth: {
-        user: testAccount.user,
-        pass: test.account.pass
+        user: testAccount.user,      // ✅ درست
+        pass: testAccount.pass       // ✅ درست (خط ۴۰)
       }
     });
 
@@ -45,15 +45,21 @@ exports.handler = async function(event, context) {
       from: '"معدن‌چی طلا" <noreply@goldminer.com>',
       to: email,
       subject: 'کد تأیید معدن‌چی طلا',
-      text: `کد تأیید: ${code}`,
-      html: `<div style="font-family: Tahoma; direction: rtl;">
-               <h2>کد تأیید: ${code}</h2>
-               <p>برای بازی معدن‌چی طلا</p>
-             </div>`
+      text: `کد تأیید ۶ رقمی شما: ${code}\n\nاین کد برای تأیید حساب شما در بازی معدن‌چی طلا است.`,
+      html: `
+        <div style="font-family: Tahoma; direction: rtl; text-align: right;">
+          <h2 style="color: #FFD700;">کد تأیید معدن‌چی طلا</h2>
+          <p>کد تأیید ۶ رقمی شما:</p>
+          <div style="background: #f4f4f4; padding: 15px; border-radius: 10px; text-align: center; font-size: 24px; font-weight: bold; color: #FFD700; margin: 20px 0;">
+            ${code}
+          </div>
+          <p>این کد برای تأیید حساب شما در بازی معدن‌چی طلا است.</p>
+        </div>
+      `
     };
 
     const result = await transporter.sendMail(mailOptions);
-    console.log('✅ Email sent! Preview:', nodemailer.getTestMessageUrl(result));
+    console.log('✅ Email sent! Preview URL:', nodemailer.getTestMessageUrl(result));
 
     return {
       statusCode: 200,
